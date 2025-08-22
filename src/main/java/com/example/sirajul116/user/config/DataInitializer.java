@@ -9,6 +9,7 @@ import com.example.sirajul116.user.repository.RoleRepository;
 import com.example.sirajul116.user.repository.UserRepository;
 import com.example.sirajul116.user.repository.UserRoleCompanyRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,21 +20,24 @@ public class DataInitializer implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final CompanyRepository companyRepository;
     private final UserRoleCompanyRepository userRoleCompanyRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     public DataInitializer(UserRepository userRepository,
                            RoleRepository roleRepository,
                            CompanyRepository companyRepository,
-                           UserRoleCompanyRepository userRoleCompanyRepository) {
+                           UserRoleCompanyRepository userRoleCompanyRepository,
+                           BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.companyRepository = companyRepository;
         this.userRoleCompanyRepository = userRoleCompanyRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     @Transactional
-    public void run(String... args) throws Exception{
-        if (userRepository.count() == 0){
+    public void run(String... args) throws Exception {
+        if (userRepository.count() == 0) {
             // Create roles
             RoleEntity adminRole = new RoleEntity();
             adminRole.setRoleName("ADMIN");
@@ -52,9 +56,9 @@ public class DataInitializer implements CommandLineRunner {
 
             // Create a user
             UserEntity user = new UserEntity();
-            user.setUsername("alice");
-            user.setPassword("temp_password"); // Will hash later
-            user.setEmail("alice@example.com");
+            user.setUserName("hridoy");
+            user.setPassword(passwordEncoder.encode("password123"));
+            user.setEmail("hridoy@example.com");
             userRepository.save(user);
 
             // Assign roles to user in companies

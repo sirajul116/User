@@ -3,7 +3,9 @@ package com.example.sirajul116.user.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.Set;
 
@@ -18,7 +20,7 @@ public class UserEntity {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String username;
+    private String userName;
 
     @Column(nullable = false)
     private String password;
@@ -27,5 +29,7 @@ public class UserEntity {
     private String email;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<UserRoleCompanyEntity> roleAssignments;
 }
